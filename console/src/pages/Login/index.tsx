@@ -10,7 +10,7 @@ const Login = () => {
 
   // 检查是否为首次访问（无密码时）
   useEffect(() => {
-    fetch("/api/auth/status")
+    fetch("/auth/status")
       .then((res) => res.json())
       .then((data) => {
         setIsFirstTime(!data.hasPassword);
@@ -26,7 +26,7 @@ const Login = () => {
   // 处理密码设置或登录提交
   const handleSubmit = async (values: { password: string; confirmPassword?: string }) => {
     try {
-      const endpoint = isFirstTime ? "/api/auth/setup" : "/api/auth/login";
+      const endpoint = isFirstTime ? "/auth/setup" : "/auth/login";
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

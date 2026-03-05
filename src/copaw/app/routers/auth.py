@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Body
 from pydantic import BaseModel
 import hashlib
+from ..auth import get_password_from_env, set_password_in_env
 
 class PasswordSetup(BaseModel):
     password: str
@@ -17,16 +18,14 @@ router = APIRouter()
 
 # 模拟函数：检查密码是否已设置
 async def has_password_set() -> bool:
-    from .auth import get_password_from_env
     return get_password_from_env() is not None
 
 # 模拟函数：验证密码
 async def verify_password(plain_password: str) -> bool:
-    from .auth import get_password_from_env
     stored_password = get_password_from_env()
     if not stored_password:
         return False
-    # 注意：生产环境应使用更安全的哈希（如bcrypt）。
+    # 注意：生产环境应使用更安全的哈希（如 bcrypt）。
     # 这里为保持与设置逻辑一致，仍进行明文比较。
     return plain_password == stored_password
 
@@ -37,7 +36,7 @@ async def auth_status():
     return {"hasPassword": has_password}
 
 @router.post("/auth/setup")
-async def setup_password(request: Request, data: PasswordSetup):
+async def setup_password(data: PasswordSetup):
     """首次设置密码。"""
     if data.password != data.confirmPassword:
         raise HTTPException(status_code=400, detail="两次输入的密码不匹配")
