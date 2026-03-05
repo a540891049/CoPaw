@@ -18,6 +18,7 @@ from ..config import (  # pylint: disable=no-name-in-module
     update_last_dispatch,
     ConfigWatcher,
 )
+from .auth import get_password_from_env, set_password_in_env
 from ..config.utils import get_jobs_path, get_chats_path, get_config_path
 from ..constant import DOCS_ENABLED, LOG_LEVEL_ENV, CORS_ORIGINS, WORKING_DIR
 from ..__version__ import __version__
@@ -30,6 +31,7 @@ from .crons.repo.json_repo import JsonJobRepository
 from .crons.manager import CronManager
 from .runner.manager import ChatManager
 from .routers import router as api_router
+from .routers.auth import router as auth_router
 from ..envs import load_envs_into_environ
 
 # Apply log level on load so reload child process gets same level as CLI.
@@ -492,6 +494,7 @@ def get_version():
     return {"version": __version__}
 
 
+app.include_router(auth_router, prefix="")
 app.include_router(api_router, prefix="/api")
 
 app.include_router(

@@ -1,7 +1,8 @@
 import { createGlobalStyle } from "antd-style";
 import { ConfigProvider, bailianTheme } from "@agentscope-ai/design";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
+import Login from "./pages/Login/index.tsx";
 import "./styles/layout.css";
 import "./styles/form-override.css";
 
@@ -17,7 +18,10 @@ function App() {
     <BrowserRouter>
       <GlobalStyle />
       <ConfigProvider {...bailianTheme} prefix="copaw" prefixCls="copaw">
-        <MainLayout />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/*" element={<MainLayout />} />
+        </Routes>
       </ConfigProvider>
     </BrowserRouter>
   );
