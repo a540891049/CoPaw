@@ -39,7 +39,26 @@ const Login = () => {
       }
 
       message.success(isFirstTime ? "密码设置成功" : "登录成功");
-      navigate("/");
+      
+      // 立即检查认证状态，确保 Cookie 已设置
+      setTimeout(async () => {
+        try {
+          const checkResponse = await fetch('/auth/check');
+          const checkData = await checkResponse.json();
+          
+          if (checkData.isAuthenticated) {
+            // 如果认证成功，跳转到聊天页面
+            navigate('/chat');
+          } else {
+            // 如果认证失败，刷新页面以重新检查认证状态
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error('检查认证状态失败:', error);
+          // 出错时也刷新页面
+          window.location.reload();
+        }
+      }, 200); // 稍微增加延迟时间以确保 Cookie 设置完成
     } catch (error: any) {
       message.error(error.message);
     }

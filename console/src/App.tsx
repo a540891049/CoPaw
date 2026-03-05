@@ -21,15 +21,25 @@ function AuthGuard({ children }: { children: JSX.Element }) {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch("/auth/status");
-        const data = await response.json();
+        // 首先检查是否设置了密码
+        const statusResponse = await fetch("/auth/status");
+        const statusData = await statusResponse.json();
         
         // 如果没有设置密码（首次访问），则重定向到登录页
-        if (!data.hasPassword) {
+        if (!statusData.hasPassword) {
           setIsAuthenticated(false);
         } else {
-          // 密码已设置，允许访问主布局
-          setIsAuthenticated(true);
+          // 密码已设置，检查用户是否已登录
+          const checkResponse = await fetch("/auth/check");
+          const checkData = await checkResponse.json();
+          
+          if (checkData.isAuthenticated) {
+            // 已登录，允许访问
+            setIsAuthenticated(true);
+          } else {
+            // 未登录，重定向到登录页
+            setIsAuthenticated(false);
+          }
         }
       } catch (error) {
         console.error("获取认证状态失败", error);
