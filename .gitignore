@@ -84,3 +84,6 @@ openspec
 /AGENTS.md
 CLAUDE.md
 *.tmp
+
+# lingma coding
+.lingma
