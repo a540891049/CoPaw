@@ -479,8 +479,26 @@ _CONSOLE_INDEX = (
 logger.info(f"STATIC_DIR: {_CONSOLE_STATIC_DIR}")
 
 
+from fastapi.responses import RedirectResponse
+
 @app.get("/")
-def read_root():
+async def read_root():
+    if _CONSOLE_INDEX and _CONSOLE_INDEX.exists():
+        # 重定向到 /login 页面
+        return RedirectResponse(url="/login")
+    return {
+        "message": (
+            "CoPaw Web Console is not available. "
+            "If you installed CoPaw from source code, please run "
+            "`npm ci && npm run build` in CoPaw's `console/` "
+            "directory, and restart CoPaw to enable the web console."
+        ),
+    }
+
+
+@app.get("/login")
+async def serve_login():
+    """提供登录页面"""
     if _CONSOLE_INDEX and _CONSOLE_INDEX.exists():
         return FileResponse(_CONSOLE_INDEX)
     return {
