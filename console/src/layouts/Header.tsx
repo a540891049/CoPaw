@@ -1,4 +1,4 @@
-import { Layout, Button, Modal, message } from "antd";
+import { Layout, Button as AntButton, Modal, message, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
@@ -81,10 +81,48 @@ export default function Header({ selectedKey }: HeaderProps) {
         {t(keyToLabel[selectedKey] || "nav.chat")}
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <Space size="middle">
+          <Tooltip title={t("header.changelog")}>
+            <Button
+              icon={<FileTextOutlined />}
+              type="text"
+              onClick={() => handleNavClick(NAV_URLS.changelog)}
+            >
+              {t("header.changelog")}
+            </Button>
+          </Tooltip>
+          <Tooltip title={t("header.docs")}>
+            <Button
+              icon={<BookOutlined />}
+              type="text"
+              onClick={() => handleNavClick(NAV_URLS.docs)}
+            >
+              {t("header.docs")}
+            </Button>
+          </Tooltip>
+          <Tooltip title={t("header.faq")}>
+            <Button
+              icon={<QuestionCircleOutlined />}
+              type="text"
+              onClick={() => handleNavClick(NAV_URLS.faq)}
+            >
+              {t("header.faq")}
+            </Button>
+          </Tooltip>
+          <Tooltip title={t("header.github")}>
+            <Button
+              icon={<GithubOutlined />}
+              type="text"
+              onClick={() => handleNavClick(NAV_URLS.github)}
+            >
+              {t("header.github")}
+            </Button>
+          </Tooltip>
+        </Space>
         <LanguageSwitcher />
-        <Button onClick={handleLogout} danger>
+        <AntButton onClick={handleLogout} danger>
           退出登录
-        </Button>
+        </AntButton>
       </div>
     </AntHeader>
   );
