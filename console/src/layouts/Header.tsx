@@ -2,8 +2,24 @@ import { Layout, Button, Modal, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import {
+  FileTextOutlined,
+  BookOutlined,
+  QuestionCircleOutlined,
+  GithubOutlined,
+} from "@ant-design/icons";
+import { Button, Tooltip } from "@agentscope-ai/design";
+import styles from "./index.module.less";
 
 const { Header: AntHeader } = Layout;
+
+// Navigation URLs
+const NAV_URLS = {
+  docs: "https://copaw.agentscope.io/docs/intro",
+  faq: "https://copaw.agentscope.io/docs/faq",
+  changelog: "https://github.com/agentscope-ai/CoPaw/releases",
+  github: "https://github.com/agentscope-ai/CoPaw",
+} as const;
 
 const keyToLabel: Record<string, string> = {
   chat: "nav.chat",
@@ -53,19 +69,15 @@ export default function Header({ selectedKey }: HeaderProps) {
     });
   };
 
+  const handleNavClick = (url: string) => {
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
+
   return (
-    <AntHeader
-      style={{
-        height: 64,
-        padding: "0 24px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: "#fff",
-        borderBottom: "1px solid #f0f0f0",
-      }}
-    >
-      <span style={{ fontSize: 18, fontWeight: 500 }}>
+    <AntHeader className={styles.header}>
+      <span className={styles.headerTitle}>
         {t(keyToLabel[selectedKey] || "nav.chat")}
       </span>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>

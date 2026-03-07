@@ -3,6 +3,7 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import Header from "../Header";
 import ConsoleCronBubble from "../../components/ConsoleCronBubble";
+import styles from "../index.module.less";
 import Chat from "../../pages/Chat";
 import ChannelsPage from "../../pages/Control/Channels";
 import SessionsPage from "../../pages/Control/Sessions";
@@ -38,7 +39,7 @@ export default function MainLayout() {
   const selectedKey = pathToKey[currentPath] || "chat";
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout className={styles.mainLayout}>
       <Sidebar selectedKey={selectedKey} />
       <Layout>
         <Header selectedKey={selectedKey} />

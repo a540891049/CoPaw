@@ -24,6 +24,10 @@ export function ChannelCard({
   const enabled = Boolean(config.enabled);
   const isBuiltin = Boolean(config.isBuiltin);
   const label = getChannelLabel(channelKey);
+  const getConfigString = (key: string) =>
+    typeof config[key] === "string" ? config[key] : "";
+  const phoneNumber = getConfigString("phone_number");
+  const botPrefix = getConfigString("bot_prefix");
 
   const getCardClassNames = () => {
     if (isHover) return `${styles.channelCard} ${styles.hover}`;
@@ -63,8 +67,15 @@ export function ChannelCard({
       </div>
 
       <div className={styles.cardDescription}>
-        {t("channels.botPrefix")}:{" "}
-        {(config.bot_prefix as string) || t("channels.notSet")}
+        {channelKey === "voice" ? (
+          <>
+            {t("channels.phoneNumber")}: {phoneNumber || t("channels.notSet")}
+          </>
+        ) : (
+          <>
+            {t("channels.botPrefix")}: {botPrefix || t("channels.notSet")}
+          </>
+        )}
       </div>
 
       <div className={styles.cardHint}>{t("channels.clickCardToEdit")}</div>
