@@ -78,7 +78,17 @@ build_frontend() {
     if npm run build; then
         log "前端代码编译成功。"
     else
-        error_exit "前端代码编译失败"
+        log "前端代码编译失败，尝试重新安装依赖..."
+        if npm ci; then
+            log "依赖安装成功，重新编译..."
+            if npm run build; then
+                log "前端代码编译成功。"
+            else
+                error_exit "重新编译前端代码仍然失败"
+            fi
+        else
+            error_exit "npm ci 安装依赖失败"
+        fi
     fi
     
     # 返回项目根目录
